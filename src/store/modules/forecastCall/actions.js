@@ -11,6 +11,7 @@ const actions = {
       commit(mutationTypes.SET_SEARCH_STATUS, 'success')
     } catch (err) {
       commit(mutationTypes.SET_SEARCH_STATUS, 'failure')
+      commit(mutationTypes.CLEAR_SEARCH_RESULTS)
     }
   },
 
@@ -24,7 +25,13 @@ const actions = {
       commit(mutationTypes.SET_SEARCH_STATUS, 'success')
     } catch (err) {
       commit(mutationTypes.SET_SEARCH_STATUS, 'failure')
+      commit(mutationTypes.CLEAR_SEARCH_RESULTS)
     }
+  },
+
+  clearSearchResults ({ commit }) {
+    commit(mutationTypes.CLEAR_SEARCH_RESULTS)
+    commit(mutationTypes.SET_SEARCH_STATUS, 'idle')
   }
 }
 

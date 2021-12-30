@@ -1,6 +1,10 @@
 <template>
   <div id="app" class="wrapper">
-    <HwSearch @searchInput="onSearchInput" :searchQuery="cityName"/>
+    <HwSearch
+    @search="onSearch"
+    @watchQuery="onQueryWatch"
+    :searchQuery="cityName"
+    />
     <div id="nav" class="weather-btns">
       <router-link :to="{ path: '/current-forecast', query: { q: cityName } }">
         <button
@@ -23,9 +27,6 @@
       <HwCurrentForecast v-if="isCurrent" />
       <HwWeekForecast v-else />
     </div>
-     <!-- <div v-if="searchStatus === searchStates.FAILURE">
-      <span>Something went wrong. Please refresh the page and try again.</span>
-    </div> -->
   </div>
 </template>
 <script>
@@ -36,21 +37,12 @@ import HwCurrentForecast from 'Pages/CurrentForecast.vue'
 import HwWeekForecast from 'Pages/WeekForecast.vue'
 import { searchStates } from 'Constants'
 
-const debouncedSearch = debounce(async function () {
-  const { cityName, isCurrent, getCurrentForecast, getWeekForecast, $router } = this
-
-  if (cityName.length > 2) {
-    if (isCurrent) {
-      await getCurrentForecast({ cityName })
-      getWeekForecast()
-    } else {
-      getWeekForecast()
-    }
-  }
+const debouncedQuery = debounce(function () {
+  const { cityName, $router } = this
   $router.push({
     query: { q: cityName }
   })
-}, 300)
+}, 0)
 
 export default {
   name: 'HWApp',
@@ -62,19 +54,23 @@ export default {
       searchStates
     }
   },
-  // async mounted () {
-  //   const { q } = this.$route.query
-
-  //   if (q) {
-  //     this.cityName = q
-  //     debouncedSearch.call(this)
-  //   }
-  // },
+  async destroyed () {
+    await this.clearSearchResults()
+  },
   methods: {
-    ...mapActions('ForecastCallModule', ['getCurrentForecast', 'getWeekForecast']),
-    onSearchInput (cityName) {
+    ...mapActions('ForecastCallModule', ['getCurrentForecast', 'getWeekForecast', 'clearSearchResults']),
+    async onSearch (cityName) {
       this.cityName = cityName
-      debouncedSearch.call(this)
+      if (cityName.length > 2) {
+        await this.getCurrentForecast({ cityName })
+        if (this.searchStatus === this.searchStates.SUCCESS) {
+          this.getWeekForecast()
+        }
+      }
+    },
+    onQueryWatch (cityName) {
+      this.cityName = cityName
+      debouncedQuery.call(this)
     }
   },
   computed: {

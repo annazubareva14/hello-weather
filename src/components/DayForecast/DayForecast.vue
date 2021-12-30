@@ -8,12 +8,11 @@
             <div class="forecast__grad"> {{dayForecast.temp.day}} °C </div>
         </div>
         <div class="forecast__description"> {{dayForecast.weather[0].description}} </div>
-        <div class="forecast__date">{{getFormatDate}}</div>
+        <div class="forecast__date">{{dayForecast.date}}</div>
       </div>
 </template>
 
 <script>
-import { getDate } from 'Utils'
 // const transform = dayForecast => ({
 //   temperature: dayForecast.
 // })
@@ -51,9 +50,6 @@ export default {
 
     getImage () {
       return `http://openweathermap.org/img/wn/${this.dayForecast.weather[0].icon}@2x.png`
-    },
-    getFormatDate () {
-      return getDate()
     }
   }
 }

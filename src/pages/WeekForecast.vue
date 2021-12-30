@@ -4,7 +4,7 @@
       <HwLocation />
     <div class="week__forecast--wrapper">
       <div
-        v-for="(day, idx) in weekForecast.daily"
+        v-for="(day, idx) in daily"
         :key="idx"
         class="day__forecast"
       >
@@ -12,14 +12,14 @@
       </div>
     </div>
     </div>
-    <div v-if="searchStatus !== searchStates.SUCCESS">
+    <div v-if="searchStatus === searchStates.IDLE">
       <span>
         Enter the location to find out what the weather for the next week is
       </span>
     </div>
-     <!-- <div v-else-if="searchStatus === searchStates.FAILURE">
-      <span>Something went wrong. Please refresh the page and try again.</span>
-    </div> -->
+     <div v-if="searchStatus === searchStates.FAILURE">
+      <span>Your location is not found</span>
+    </div>
   </div>
 </template>
 <script>
@@ -27,6 +27,7 @@ import HwDayForecast from 'Components/DayForecast/DayForecast.vue'
 import HwLocation from 'Components/Location/Location.vue'
 import { mapGetters } from 'vuex'
 import { searchStates } from 'Constants'
+import { addDay, formatDate } from 'Utils'
 
 export default {
   components: { HwDayForecast, HwLocation },
@@ -36,25 +37,16 @@ export default {
       searchStates
     }
   },
-  props: {
-    // location: {
-    //   type: Object,
-    //   default: () => ({
-    //     name: '',
-    //     sys: {
-    //       country: ''
-    //     }
-    //   })
-    // }
-    // weekForecast: {
-    //   type: Object,
-    //   default: () => ({
-    //     daily: {}
-    //   })
-    // }
-  },
   computed: {
-    ...mapGetters('ForecastCallModule', ['currentForecast', 'weekForecast', 'searchStatus'])
+    ...mapGetters('ForecastCallModule', ['currentForecast', 'weekForecast', 'searchStatus']),
+    daily () {
+      return this.weekForecast
+        ? this.weekForecast.daily.map((day, index) => ({
+          ...day,
+          date: formatDate(addDay(new Date(), index))
+        })).slice(1)
+        : []
+    }
     // forecast () {
     //   return apiResponse.daily.map((day) => ({
     //       temperature: day.temp.day,

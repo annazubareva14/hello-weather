@@ -10,13 +10,13 @@
         <div class="forecast__description"> {{currentForecast.weather[0].main}} </div>
       </div>
     </div>
-    <div v-if="searchStatus !== searchStates.SUCCESS">
+    <div v-if="searchStatus === searchStates.IDLE">
       <span>
         Enter the location to find out what the weather today is
       </span>
     </div>
-    <div v-else-if="searchStatus === searchStates.FAILURE">
-      <span>Something went wrong. Please refresh the page and try again.</span>
+    <div v-if="searchStatus === searchStates.FAILURE">
+      <span>Your location is not found</span>
     </div>
   </div>
 </template>

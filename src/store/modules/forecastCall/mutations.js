@@ -12,6 +12,11 @@ const mutations = {
   },
   [mutationTypes.SET_SEARCH_STATUS] (state, status) {
     state.searchStatus = status
+  },
+  [mutationTypes.CLEAR_SEARCH_RESULTS] (state) {
+    state.currentForecast = null
+    state.weekForecast = null
+    state.coord = null
   }
 }
 

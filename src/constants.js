@@ -3,7 +3,8 @@ export const BASE_URL = 'http://api.openweathermap.org/data/2.5/forecast?id=5249
 
 export const searchStates = {
   SUCCESS: 'success',
-  FAILURE: 'failure'
+  FAILURE: 'failure',
+  IDLE: 'idle'
 }
 
 export const isoCountries = {

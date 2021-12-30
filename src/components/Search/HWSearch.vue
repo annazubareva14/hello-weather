@@ -1,16 +1,18 @@
 <template>
     <div>
-        <form class="search-form">
+        <form
+          class="search-form"
+          @keyup.enter="getEntries"
+          >
             <input
               placeholder="Search"
               class="search-input"
-              @input="getEntries"
+              @input="onInput"
               v-model.trim="cityName"
-              @keyup.enter="getEntries"
             >
             <button
               class="search-button"
-              @click="getEntries"
+              @click.prevent="getEntries"
             >
                 <svg class="submit-button">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#search"></use>
@@ -50,14 +52,16 @@ export default {
   },
   methods: {
     getEntries () {
+      this.$emit('search', this.cityName)
+    },
+    onInput () {
       if (this.hasDebounce) {
         const debouncedEmit = debounce(() => {
-          this.$emit('searchInput', this.cityName)
-        }, 300)
+          this.$emit('watchQuery', this.cityName)
+        }, 0)
         debouncedEmit(this.cityName)
-        return
       }
-      this.$emit('searchInput', this.cityName)
+      this.$emit('watchQuery', this.cityName)
     }
   }
 }

@@ -1,4 +1,4 @@
-import isoCountries from 'Constants'
+import { isoCountries } from 'Constants'
 
 const convertCountryCode = (code) => {
   // eslint-disable-next-line no-prototype-builtins

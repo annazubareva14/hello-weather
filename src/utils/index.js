@@ -1,9 +1,11 @@
 import debounce from './debounce'
 import convertCountryCode from './convertCountryCode'
-import getDate from './getDate'
+import addDay from './addDay'
+import formatDate from './formatDate'
 
 export {
   debounce,
   convertCountryCode,
-  getDate
+  addDay,
+  formatDate
 }
