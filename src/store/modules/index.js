@@ -1,5 +1,5 @@
-import ForecastCallModule from './forecastCall'
+import ForecastModule from './forecastCall';
 
 export default {
-  ForecastCallModule
-}
+  ForecastModule,
+};

@@ -1,11 +1,13 @@
 /* eslint-disable key-spacing */
-export const BASE_URL = 'http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=b6e9df68f337738ffa21d34dbbc17f20'
+export const BASE_URL = 'http://api.openweathermap.org/data/2.5';
+
+export const API_KEY = 'b6e9df68f337738ffa21d34dbbc17f20';
 
 export const searchStates = {
   SUCCESS: 'success',
   FAILURE: 'failure',
-  IDLE: 'idle'
-}
+  IDLE: 'idle',
+};
 
 export const isoCountries = {
   AF : 'Afghanistan',
@@ -252,5 +254,5 @@ export const isoCountries = {
   EH : 'Western Sahara',
   YE : 'Yemen',
   ZM : 'Zambia',
-  ZW : 'Zimbabwe'
-}
+  ZW : 'Zimbabwe',
+};

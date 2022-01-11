@@ -1,15 +1,24 @@
 <template>
-      <div class="day__forecast">
-        <div class="pic-wrapper">
-          <img :src="getImage" alt="weather">
-        </div>
-        <div class="forecast__temperature">
-            <span>Avg Temp:</span>
-            <div class="forecast__grad"> {{dayForecast.temp.day}} °C </div>
-        </div>
-        <div class="forecast__description"> {{dayForecast.weather[0].description}} </div>
-        <div class="forecast__date">{{dayForecast.date}}</div>
+  <div class="day__forecast">
+    <div class="pic-wrapper">
+      <img
+        :src="getImage"
+        alt="weather"
+      />
+    </div>
+    <div class="forecast__temperature">
+      <span>Avg Temp:</span>
+      <div class="forecast__grad">
+        {{ dayForecast.temp.day }} °C
       </div>
+    </div>
+    <div class="forecast__description">
+      {{ dayForecast.weather[0].description }}
+    </div>
+    <div class="forecast__date">
+      {{ dayForecast.date }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -17,42 +26,42 @@
 //   temperature: dayForecast.
 // })
 
-export default {
-  name: 'HwDayForecast',
+  export default {
+    name: 'HwDayForecast',
 
-  props: {
-    dayForecast: {
-      type: Object,
-      default: () => ({
-        dt: 0,
-        temp: {
-          day: 0
-        },
-        weather: [{
-          description: '',
-          icon: ''
-        }]
-      })
-    }
-  },
-  computed: {
-  //   // day () {
-  //   //   return iretateArray(days)
-  //   // },
-  //   weather () {
-  //     return {
-  //       temperature: this.complexObject.a.b,
-  //     },
-  //   // },
-  //   day () {
-  //     return Object.values(this.dayForecast)
-  //   },
+    props: {
+      dayForecast: {
+        type: Object,
+        default: () => ({
+          dt: 0,
+          temp: {
+            day: 0,
+          },
+          weather: [{
+            description: '',
+            icon: '',
+          }],
+        }),
+      },
+    },
+    computed: {
+      //   // day () {
+      //   //   return iretateArray(days)
+      //   // },
+      //   weather () {
+      //     return {
+      //       temperature: this.complexObject.a.b,
+      //     },
+      //   // },
+      //   day () {
+      //     return Object.values(this.dayForecast)
+      //   },
 
-    getImage () {
-      return `http://openweathermap.org/img/wn/${this.dayForecast.weather[0].icon}@2x.png`
-    }
-  }
-}
+      getImage() {
+        return `http://openweathermap.org/img/wn/${this.dayForecast.weather[0].icon}@2x.png`;
+      },
+    },
+  };
 </script>
 <style lang="scss" scoped>
 .forecast__temperature {

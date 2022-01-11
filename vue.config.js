@@ -18,6 +18,6 @@ module.exports = {
         Services: path.resolve(__dirname, './src/services')
       }
     },
-    devtool: 'source-map'
+    devtool: 'eval-source-map'
   }
 }

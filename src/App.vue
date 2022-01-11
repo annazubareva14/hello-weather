@@ -1,23 +1,29 @@
 <template>
-  <div id="app" class="wrapper">
+  <div
+    id="app"
+    class="wrapper"
+  >
     <HwSearch
-    @search="onSearch"
-    @watchQuery="onQueryWatch"
-    :searchQuery="cityName"
+      :searchQuery="cityName"
+      @search="onSearch"
+      @inputQuery="onQueryInput"
     />
-    <div id="nav" class="weather-btns">
+    <div
+      id="nav"
+      class="weather-btns"
+    >
       <router-link :to="{ path: '/current-forecast', query: { q: cityName } }">
         <button
-        class="weather-btn"
-        @click="isCurrent = true"
+          class="weather-btn"
+          @click="changeCurrentToTrue"
         >
           current
         </button>
       </router-link>
       <router-link :to="{ path: '/week-forecast', query: { q: cityName } }">
         <button
-        class="weather-btn"
-        @click="isCurrent = false"
+          class="weather-btn"
+          @click="changeCurrentToFalse"
         >
           7 day forecast
         </button>
@@ -30,53 +36,73 @@
   </div>
 </template>
 <script>
-import HwSearch from 'Components/Search/HWSearch.vue'
-import { debounce } from 'Utils'
-import { mapActions, mapGetters } from 'vuex'
-import HwCurrentForecast from 'Pages/CurrentForecast.vue'
-import HwWeekForecast from 'Pages/WeekForecast.vue'
-import { searchStates } from 'Constants'
+  import HwSearch from 'Components/Search/HWSearch.vue';
+  import { debounce } from 'Utils';
+  import { mapActions, mapGetters } from 'vuex';
+  import HwCurrentForecast from 'Pages/CurrentForecast.vue';
+  import HwWeekForecast from 'Pages/WeekForecast.vue';
+  import { searchStates } from 'Constants';
 
-const debouncedQuery = debounce(function () {
-  const { cityName, $router } = this
-  $router.push({
-    query: { q: cityName }
-  })
-}, 0)
+  const debouncedQuery = debounce(function () {
+    const { cityName, $router } = this;
 
-export default {
-  name: 'HWApp',
-  components: { HwSearch, HwCurrentForecast, HwWeekForecast },
-  data () {
-    return {
-      cityName: '',
-      isCurrent: true,
-      searchStates
-    }
-  },
-  async destroyed () {
-    await this.clearSearchResults()
-  },
-  methods: {
-    ...mapActions('ForecastCallModule', ['getCurrentForecast', 'getWeekForecast', 'clearSearchResults']),
-    async onSearch (cityName) {
-      this.cityName = cityName
-      if (cityName.length > 2) {
-        await this.getCurrentForecast({ cityName })
-        if (this.searchStatus === this.searchStates.SUCCESS) {
-          this.getWeekForecast()
-        }
-      }
+    $router.push({
+      query: { q: cityName },
+    });
+  }, 0);
+
+  export default {
+    name: 'HWApp',
+
+    components: { HwSearch, HwCurrentForecast, HwWeekForecast },
+
+    data() {
+      return {
+        cityName: '',
+        isCurrent: true,
+        searchStates,
+      };
     },
-    onQueryWatch (cityName) {
-      this.cityName = cityName
-      debouncedQuery.call(this)
-    }
-  },
-  computed: {
-    ...mapGetters('ForecastCallModule', ['searchStatus'])
-  }
-}
+
+    computed: {
+      ...mapGetters('ForecastModule', ['searchStatus']),
+    },
+
+    async destroyed() {
+      await this.clearSearchResults();
+    },
+
+    methods: {
+      ...mapActions('ForecastModule', ['getCurrentForecast', 'getWeekForecast', 'clearSearchResults']),
+
+      async changeCurrentToTrue() {
+        this.isCurrent = true;
+        await this.onSearch(this.cityName);
+      },
+
+      async changeCurrentToFalse() {
+        this.isCurrent = false;
+        await this.onSearch(this.cityName);
+      },
+
+      async onSearch(cityName) {
+        this.cityName = cityName;
+        if (cityName.length > 2) {
+          if (this.isCurrent) {
+            await this.getCurrentForecast(cityName);
+          } else {
+            await this.getCurrentForecast(cityName);
+            await this.getWeekForecast(cityName);
+          }
+        }
+      },
+
+      onQueryWatch(cityName) {
+        this.cityName = cityName;
+        debouncedQuery.call(this);
+      },
+    },
+  };
 </script>
 
 <style lang="scss" scoped>

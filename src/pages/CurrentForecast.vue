@@ -4,10 +4,17 @@
       <HwLocation />
       <div class="current__forecast">
         <div class="forecast__pic-wrapper">
-          <img :src="getImage" alt="weather">
+          <img
+            :src="getImage"
+            alt="weather"
+          />
         </div>
-        <div class="forecast__temperature"> {{currentForecast.main.temp}} °C </div>
-        <div class="forecast__description"> {{currentForecast.weather[0].main}} </div>
+        <div class="forecast__temperature">
+          {{ currentForecast.main.temp }} °C
+        </div>
+        <div class="forecast__description">
+          {{ currentForecast.weather[0].main }}
+        </div>
       </div>
     </div>
     <div v-if="searchStatus === searchStates.IDLE">
@@ -21,25 +28,28 @@
   </div>
 </template>
 <script>
-import HwLocation from 'Components/Location/Location.vue'
-import { mapGetters } from 'vuex'
-import { searchStates } from 'Constants'
+  import HwLocation from 'Components/Location/Location.vue';
+  import { mapGetters } from 'vuex';
+  import { searchStates } from 'Constants';
 
-export default {
-  components: { HwLocation },
-  name: 'HwCurrentForecast',
-  data () {
-    return {
-      searchStates
-    }
-  },
-  computed: {
-    ...mapGetters('ForecastCallModule', ['currentForecast', 'searchStatus']),
-    getImage () {
-      return `http://openweathermap.org/img/wn/${this.currentForecast.weather[0].icon}@2x.png`
-    }
-  }
-}
+  export default {
+    name: 'HwCurrentForecast',
+
+    components: { HwLocation },
+
+    data() {
+      return {
+        searchStates,
+      };
+    },
+
+    computed: {
+      ...mapGetters('ForecastModule', ['currentForecast', 'searchStatus']),
+      getImage() {
+        return `http://openweathermap.org/img/wn/${this.currentForecast.weather[0].icon}@2x.png`;
+      },
+    },
+  };
 </script>
 
 <style lang="scss" scoped>

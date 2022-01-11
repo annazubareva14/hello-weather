@@ -1,38 +1,39 @@
-import { axios } from 'Services'
-import mutationTypes from './mutationTypes'
+import { axios } from 'Services';
+import { BASE_URL, API_KEY } from 'Constants';
+import mutationTypes from './mutationTypes';
 
 const actions = {
-  async getCurrentForecast ({ commit }, { cityName }) {
+  async getCurrentForecast({ commit }, cityName) {
     try {
-      const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=b6e9df68f337738ffa21d34dbbc17f20`)
+      const { data } = await axios.get(`${BASE_URL}/weather?q=${cityName}&units=metric&appid=${API_KEY}`);
 
-      commit(mutationTypes.SET_CURRENT_F0RECAST, data)
-      commit(mutationTypes.SET_COORD)
-      commit(mutationTypes.SET_SEARCH_STATUS, 'success')
+      commit(mutationTypes.SET_CURRENT_F0RECAST, data);
+      commit(mutationTypes.SET_COORD);
+      commit(mutationTypes.SET_SEARCH_STATUS, 'success');
     } catch (err) {
-      commit(mutationTypes.SET_SEARCH_STATUS, 'failure')
-      commit(mutationTypes.CLEAR_SEARCH_RESULTS)
+      commit(mutationTypes.SET_SEARCH_STATUS, 'failure');
+      commit(mutationTypes.CLEAR_SEARCH_RESULTS);
     }
   },
 
-  async getWeekForecast ({ commit, state }) {
-    const { lat, lon } = state.coord
+  async getWeekForecast({ commit, state }) {
+    const { lat, lon } = state.coord;
 
     try {
-      const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=alerts&units=metric&appid=b6e9df68f337738ffa21d34dbbc17f20`)
+      const { data } = await axios.get(`${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=alerts&units=metric&appid=${API_KEY}`);
 
-      commit(mutationTypes.SET_WEEK_FORECAST, data)
-      commit(mutationTypes.SET_SEARCH_STATUS, 'success')
+      commit(mutationTypes.SET_WEEK_FORECAST, data);
+      commit(mutationTypes.SET_SEARCH_STATUS, 'success');
     } catch (err) {
-      commit(mutationTypes.SET_SEARCH_STATUS, 'failure')
-      commit(mutationTypes.CLEAR_SEARCH_RESULTS)
+      commit(mutationTypes.SET_SEARCH_STATUS, 'failure');
+      commit(mutationTypes.CLEAR_SEARCH_RESULTS);
     }
   },
 
-  clearSearchResults ({ commit }) {
-    commit(mutationTypes.CLEAR_SEARCH_RESULTS)
-    commit(mutationTypes.SET_SEARCH_STATUS, 'idle')
-  }
-}
+  clearSearchResults({ commit }) {
+    commit(mutationTypes.CLEAR_SEARCH_RESULTS);
+    commit(mutationTypes.SET_SEARCH_STATUS, 'idle');
+  },
+};
 
-export default actions
+export default actions;
