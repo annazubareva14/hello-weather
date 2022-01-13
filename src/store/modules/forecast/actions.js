@@ -1,11 +1,16 @@
 import { axios } from 'Services';
-import { BASE_URL, API_KEY } from 'Constants';
+import { API_KEY } from 'Constants';
 import mutationTypes from './mutationTypes';
 
 const actions = {
   async getCurrentForecast({ commit }, cityName) {
     try {
-      const { data } = await axios.get(`${BASE_URL}/weather?q=${cityName}&units=metric&appid=${API_KEY}`);
+      const params = new URLSearchParams({
+        q: cityName,
+        units: 'metric',
+        appid: API_KEY,
+      });
+      const { data } = await axios.get('/weather', { params });
 
       commit(mutationTypes.SET_CURRENT_F0RECAST, data);
       commit(mutationTypes.SET_COORD);
@@ -20,7 +25,14 @@ const actions = {
     const { lat, lon } = state.coord;
 
     try {
-      const { data } = await axios.get(`${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=alerts&units=metric&appid=${API_KEY}`);
+      const params = new URLSearchParams({
+        lat: lat,
+        lon: lon,
+        exclude: 'alerts',
+        units: 'metric',
+        appid: API_KEY,
+      });
+      const { data } = await axios.get('/onecall', { params });
 
       commit(mutationTypes.SET_WEEK_FORECAST, data);
       commit(mutationTypes.SET_SEARCH_STATUS, 'success');

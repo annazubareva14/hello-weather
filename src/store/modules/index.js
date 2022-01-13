@@ -1,4 +1,4 @@
-import ForecastModule from './forecastCall';
+import ForecastModule from './forecast';
 
 export default {
   ForecastModule,

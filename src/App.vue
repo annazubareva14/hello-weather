@@ -6,7 +6,6 @@
     <HwSearch
       :searchQuery="cityName"
       @search="onSearch"
-      @inputQuery="onQueryInput"
     />
     <div
       id="nav"
@@ -15,7 +14,7 @@
       <router-link :to="{ path: '/current-forecast', query: { q: cityName } }">
         <button
           class="weather-btn"
-          @click="changeCurrentToTrue"
+          @click="getCurrentForecastTab"
         >
           current
         </button>
@@ -23,7 +22,7 @@
       <router-link :to="{ path: '/week-forecast', query: { q: cityName } }">
         <button
           class="weather-btn"
-          @click="changeCurrentToFalse"
+          @click="getWeekForecastTab"
         >
           7 day forecast
         </button>
@@ -37,19 +36,10 @@
 </template>
 <script>
   import HwSearch from 'Components/Search/HWSearch.vue';
-  import { debounce } from 'Utils';
   import { mapActions, mapGetters } from 'vuex';
   import HwCurrentForecast from 'Pages/CurrentForecast.vue';
   import HwWeekForecast from 'Pages/WeekForecast.vue';
   import { searchStates } from 'Constants';
-
-  const debouncedQuery = debounce(function () {
-    const { cityName, $router } = this;
-
-    $router.push({
-      query: { q: cityName },
-    });
-  }, 0);
 
   export default {
     name: 'HWApp',
@@ -75,12 +65,12 @@
     methods: {
       ...mapActions('ForecastModule', ['getCurrentForecast', 'getWeekForecast', 'clearSearchResults']),
 
-      async changeCurrentToTrue() {
+      async getCurrentForecastTab() {
         this.isCurrent = true;
         await this.onSearch(this.cityName);
       },
 
-      async changeCurrentToFalse() {
+      async getWeekForecastTab() {
         this.isCurrent = false;
         await this.onSearch(this.cityName);
       },
@@ -95,11 +85,6 @@
             await this.getWeekForecast(cityName);
           }
         }
-      },
-
-      onQueryWatch(cityName) {
-        this.cityName = cityName;
-        debouncedQuery.call(this);
       },
     },
   };

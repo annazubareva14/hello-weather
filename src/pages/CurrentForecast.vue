@@ -3,16 +3,16 @@
     <div v-if="searchStatus === searchStates.SUCCESS">
       <HwLocation />
       <div class="current__forecast">
-        <div class="forecast__pic-wrapper">
+        <div class="pic-wrapper">
           <img
             :src="getImage"
             alt="weather"
           />
         </div>
-        <div class="forecast__temperature">
+        <div class="temperature">
           {{ currentForecast.main.temp }} °C
         </div>
-        <div class="forecast__description">
+        <div class="description">
           {{ currentForecast.weather[0].main }}
         </div>
       </div>
@@ -52,17 +52,13 @@
   };
 </script>
 
-<style lang="scss" scoped>
-.location__country {
-  font-weight: bold;
-}
-
-.forecast__temperature {
+<style scoped>
+.temperature {
   margin-bottom: 20px;
   font-size: 20px;
 }
 
-.forecast__description {
+.description {
   font-size: 18px;
 }
 </style>

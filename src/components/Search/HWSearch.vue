@@ -2,17 +2,16 @@
   <div>
     <form
       class="search-form"
-      @keyup.enter="getEntries"
+      @submit.prevent="onSearch"
     >
       <input
         v-model.trim="cityName"
         placeholder="Search"
         class="search-input"
-        @input="onInput"
       />
       <button
+        type="submit"
         class="search-button"
-        @click.prevent="getEntries"
       >
         <img
           src="@/assets/search.svg"
@@ -28,7 +27,7 @@
 
   const debouncedEmit = debounce(() => {
     this.$emit('inputQuery', this.cityName);
-  }, 0);
+  }, 3000);
 
   export default {
     name: 'HwSearch',
@@ -51,14 +50,11 @@
     },
 
     methods: {
-      getEntries() {
+      onSearch() {
         this.$emit('search', this.cityName);
-      },
-      onInput() {
         if (this.hasDebounce) {
           debouncedEmit(this.cityName);
         }
-        this.$emit('inputQuery', this.cityName);
       },
     },
   };
