@@ -5,6 +5,7 @@
   >
     <HwSearch
       :searchQuery="cityName"
+      hasDebounce
       @search="onSearch"
     />
     <div

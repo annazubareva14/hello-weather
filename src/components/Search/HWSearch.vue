@@ -8,6 +8,7 @@
         v-model.trim="cityName"
         placeholder="Search"
         class="search-input"
+        @input="onSearch"
       />
       <button
         type="submit"
@@ -25,9 +26,9 @@
 <script>
   import { debounce } from 'Utils';
 
-  const debouncedEmit = debounce(() => {
-    this.$emit('inputQuery', this.cityName);
-  }, 3000);
+  const debouncedEmit = debounce(function () {
+    this.$emit('search', this.cityName);
+  }, 300);
 
   export default {
     name: 'HwSearch',
@@ -51,9 +52,10 @@
 
     methods: {
       onSearch() {
-        this.$emit('search', this.cityName);
         if (this.hasDebounce) {
-          debouncedEmit(this.cityName);
+          debouncedEmit.call(this);
+        } else {
+          this.$emit('search', this.cityName);
         }
       },
     },
