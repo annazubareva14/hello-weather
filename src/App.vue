@@ -12,21 +12,19 @@
       id="nav"
       class="weather-btns"
     >
-      <router-link :to="{ path: '/current-forecast', query: { q: cityName } }">
-        <button
-          class="weather-btn"
-          @click="getCurrentForecastTab"
-        >
-          current
-        </button>
+      <router-link
+        :to="{ path: '/current-forecast', query: { q: cityName } }"
+        class="weather-btn"
+        @click="getCurrentForecastTab"
+      >
+        current
       </router-link>
-      <router-link :to="{ path: '/week-forecast', query: { q: cityName } }">
-        <button
-          class="weather-btn"
-          @click="getWeekForecastTab"
-        >
-          7 day forecast
-        </button>
+      <router-link
+        :to="{ path: '/week-forecast', query: { q: cityName } }"
+        class="weather-btn"
+        @click="getWeekForecastTab"
+      >
+        7 day forecast
       </router-link>
     </div>
     <div>
@@ -92,32 +90,6 @@
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  margin-top: 50px;
-}
-
-.weather-btns {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.weather-btn {
-  display: block;
-  text-decoration: none;
-  background: rgba(223, 231, 235, 0);
-  padding: 10px;
-  width: 180px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  text-transform: uppercase;
-  cursor: pointer;
-  border: none;
-  font-weight: bold;
-  color: inherit;
-}
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -126,18 +98,32 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+.wrapper {
+  margin-top: 50px;
+}
 
-  a {
-    text-decoration: none;
-    color: #8796a7;
+.weather-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
 
-      &.router-link-exact-active {
+.weather-btn {
+  display: block;
+  padding: 10px;
+  width: 180px;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-decoration: none;
+  color: #8796a7;
+
+    &.router-link-exact-active {
       color: #2c3d4f;
       background-color: #dfe7eb;
       box-shadow: 0 3px 0 #4ba8cc;
       }
-  }
+
 }
 </style>
